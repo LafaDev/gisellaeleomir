@@ -10,7 +10,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import IconButton from '@mui/material/IconButton';
 import type { TransitionProps } from '@mui/material/transitions';
 
-
 const styles = ({ theme }: { theme: Theme }) =>
   ({
     [`& .${snackbarContentClasses.root}`]: {
@@ -64,7 +63,7 @@ function Snackbar(props: SnackbarProps & ExtraSnackbarProps) {
 
   return (
     <MuiSnackbar
-      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // força topo
       autoHideDuration={6000}
       TransitionComponent={Transition}
       message={
@@ -89,4 +88,5 @@ function Snackbar(props: SnackbarProps & ExtraSnackbarProps) {
   );
 }
 
-export default styled(Snackbar)(styles);
+// Aqui usamos "as typeof Snackbar" para evitar conflito de tipos do styled
+export default styled(Snackbar, { shouldForwardProp: (prop) => prop !== 'classes' })(styles) as typeof Snackbar;
