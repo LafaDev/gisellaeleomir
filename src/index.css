@@ -56,3 +56,56 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+#confirmationBox {
+  position: relative;
+  overflow: hidden;
+}
+
+#confirmationBox::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/src/assets/floral.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1; /* adjust opacity */
+  z-index: 0;
+}
+
+#confirmationBox > * {
+  position: relative;
+  z-index: 1; /* ensure content is above background */
+}
+
+#confirmationBackground {
+  position: relative;
+  overflow: hidden;
+  background-color: #00000010; /* subtle dark overlay */
+  border-radius: 12px; /* slightly rounded corners */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* soft shadow */
+}
+
+#confirmationBackground::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.05; /* adjust for subtlety */
+  z-index: 0;
+  filter: brightness(0.97); /* slightly darkens the floral image */
+  transition: all 0.5s ease; /* smooth transitions if needed */
+}
+
+#confirmationBackground > * {
+  position: relative;
+  z-index: 1; /* ensures content is above the background */
+}

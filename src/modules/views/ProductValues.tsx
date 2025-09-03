@@ -67,20 +67,22 @@ function ProductValues() {
   return (
     <Box
       id="confirmation"
-
       sx={{ mb: { sx: 0, md: 2 }, paddingTop: { sx: 0, md: 7 }}}
     >
     <Box
       component="section"
+      id="confirmationBackground"
       sx={{
         display: "flex",
         justifyContent: "center",
+        overflow: "hidden",
+        backgroundPosition: "center",
         py: { xs: 0, md: 8 },
-        bgcolor: "#f5f5f5",
       }}
     >
       {/* Card container */}
       <Box
+      id="confirmationBox"
         sx={{
           bgcolor: "background.paper",
           borderRadius: 4,
