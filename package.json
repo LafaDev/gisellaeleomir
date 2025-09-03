@@ -20,6 +20,7 @@
     "markdown-to-jsx": "^7.7.13",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-final-form": "^7.0.0",
     "react-router-dom": "^7.8.0",
     "tree-cli": "^0.6.7"
   },

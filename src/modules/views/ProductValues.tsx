@@ -1,9 +1,9 @@
-import * as React from "react";
+import React from "react";
 import { useState } from "react";
 import Box from "@mui/material/Box";
+import Typography from "../components/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import Typography from "../components/Typography";
 import CheckIcon from "@mui/icons-material/Check";
 import PersonIcon from "@mui/icons-material/Person";
 import CloseIcon from "@mui/icons-material/Close";
@@ -11,13 +11,19 @@ import CloseIcon from "@mui/icons-material/Close";
 // Example guest list
 const initialGuests = [
   "Maria Silva",
-  "Ana Costa",
   "Carlos Souza",
   "Fernanda Lima",
 ];
 
 // Type for guest status
 type GuestStatus = "pending" | "going" | "notGoing";
+
+// Type for button props
+type MUIButtonProps = {
+  variant: "text" | "outlined" | "contained";
+  color: "primary" | "secondary" | "success" | "error" | "info" | "warning";
+  startIcon: React.ReactNode;
+};
 
 function ProductValues() {
   const [statuses, setStatuses] = useState<Record<string, GuestStatus>>({});
@@ -35,23 +41,23 @@ function ProductValues() {
     });
   };
 
-  const getButtonProps = (status: GuestStatus) => {
+  const getButtonProps = (status: GuestStatus): MUIButtonProps => {
     switch (status) {
       case "going":
         return {
-          variant: "contained",
+          variant: "contained" as const,
           color: "success" as const,
           startIcon: <CheckIcon />,
         };
       case "notGoing":
         return {
-          variant: "contained",
+          variant: "contained" as const,
           color: "error" as const,
           startIcon: <CloseIcon />,
         };
       default:
         return {
-          variant: "outlined",
+          variant: "outlined" as const,
           color: "primary" as const,
           startIcon: <PersonIcon />,
         };
@@ -60,12 +66,16 @@ function ProductValues() {
 
   return (
     <Box
-      component="section"
       id="confirmation"
+
+      sx={{ mb: { sx: 0, md: 2 }, paddingTop: { sx: 0, md: 7 }}}
+    >
+    <Box
+      component="section"
       sx={{
         display: "flex",
         justifyContent: "center",
-        py: { xs: 0, md: 6 },
+        py: { xs: 0, md: 8 },
         bgcolor: "#f5f5f5",
       }}
     >
@@ -73,14 +83,14 @@ function ProductValues() {
       <Box
         sx={{
           bgcolor: "background.paper",
-          borderRadius: 2,
+          borderRadius: 4,
           boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
-          p: { xs: 1, md: 5 },
+          p: { xs: 3, md: 5 },
           maxWidth: 600,
           width: "100%",
         }}
       >
-        {/* Título */}
+        {/* Title */}
         <Typography
           variant="h3"
           align="center"
@@ -94,14 +104,15 @@ function ProductValues() {
         >
           Você foi escolhido para esse momento
         </Typography>
-        {/* Botões de convidados */}
+
+        {/* Guest buttons */}
         <Grid container spacing={3} direction="column" alignItems="center">
           {initialGuests.map((guest) => {
             const status = statuses[guest] || "pending";
             const buttonProps = getButtonProps(status);
 
             return (
-              <Grid item key={guest} sx={{ width: "100%" }}>
+              <Grid key={guest} sx={{ width: "100%" }}>
                 <Button
                   {...buttonProps}
                   onClick={() => toggleStatus(guest)}
@@ -128,8 +139,8 @@ function ProductValues() {
           })}
         </Grid>
 
-        {/* Resumo */}
-        <Box sx={{ mt: 5 }}>
+        {/* Summary */}
+        {/* <Box sx={{ mt: 5 }}>
           {Object.values(statuses).some((s) => s === "going") && (
             <Typography
               variant="h6"
@@ -155,18 +166,17 @@ function ProductValues() {
                 .join(", ")}
             </Typography>
           )}
-        </Box>
+        </Box> */}
 
-        {/* Botão final */}
-        <Box sx={{ mt: 0 }}>
+        {/* Final confirm button */}
+        <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
           <Button
             variant="contained"
             color="primary"
             size="large"
             sx={{
-              mb: 2,
               borderRadius: "50px",
-              px: 6,
+              px: 2,
               py: 1.8,
               fontSize: 18,
               fontWeight: "bold",
@@ -184,6 +194,7 @@ function ProductValues() {
           </Button>
         </Box>
       </Box>
+    </Box>
     </Box>
   );
 }

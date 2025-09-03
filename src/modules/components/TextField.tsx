@@ -1,4 +1,3 @@
-import * as React from 'react';
 import clsx from 'clsx';
 import { styled } from '@mui/material/styles';
 import type { Theme } from '@mui/material/styles';

@@ -1,10 +1,9 @@
-import * as React from 'react';
 import type { Theme } from '@mui/material/styles';
-import { height, type SxProps } from '@mui/system';
+import { type SxProps } from '@mui/system';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/GridLegacy';
 import Container from '@mui/material/Container';
-import Button from '../components/Button';
+// import Button from '../components/Button';
 import Typography from '../components/Typography';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
@@ -22,7 +21,7 @@ const item: SxProps<Theme> = {
   textAlign: 'center',
 };
 
-const gapWidths = { xs: 120, sm: 160, md: 220 };
+// const gapWidths = { xs: 120, sm: 160, md: 220 };
 
 
 const number = {
@@ -32,10 +31,10 @@ const number = {
   fontWeight: 'medium',
 };
 
-const image = {
-  height: 55,
-  my: 3,
-};
+// const image = {
+//   height: 55,
+//   my: 3,
+// };
 
 function ProductHowItWorks() {
   return (

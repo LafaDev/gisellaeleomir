@@ -1,4 +1,3 @@
-import * as React from 'react';
 import MuiAppBar from '@mui/material/AppBar';
 import type { AppBarProps } from '@mui/material/AppBar';
 
