@@ -8,6 +8,7 @@ import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import imgGl from "/src/assets/gl.png";
 
 // Icons
 import HelpIcon from "@mui/icons-material/Help"; // exemplo de logo no canto esquerdo
@@ -42,7 +43,7 @@ function AppAppBar() {
             {/* Canto Esquerdo (Logo ou ícone) */}
             <Box
               component="img"
-              src="/src/assets/gl.png"
+              src={imgGl}
               alt="curvy lines"
               sx={{
                 color: "white",

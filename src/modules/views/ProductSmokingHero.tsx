@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '../components/Typography';
+import boyo from 'src/images/Hero/productBuoy.svg';
 
 function ProductSmokingHero() {
   return (
@@ -27,7 +28,7 @@ function ProductSmokingHero() {
       </Typography>
       <Box
         component="img"
-        src="/src/images/Hero/productBuoy.svg"
+        src={boyo}
         alt="buoy"
         sx={{ width: 60 }}
       />

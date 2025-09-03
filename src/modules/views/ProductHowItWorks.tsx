@@ -8,6 +8,9 @@ import Typography from '../components/Typography';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import MobileOffIcon from '@mui/icons-material/MobileOff';
+import CurvyLines from "/src/images/Hero/productCurvyLines.png";
+import Noivo from "/src/assets/noivo.png";
+import Noiva from "/src/assets/noiva.png";
 
 const item: SxProps<Theme> = {
   display: 'flex',
@@ -54,7 +57,7 @@ function ProductHowItWorks() {
       >
         <Box
           component="img"
-          src="/src/images/Hero/productCurvyLines.png"
+          src={CurvyLines}
           alt="curvy lines"
           sx={{
             pointerEvents: 'none',
@@ -92,7 +95,7 @@ function ProductHowItWorks() {
               <Box sx={item}>
                 <Box
                   component="img"
-                  src="/src/assets/noiva.png"
+                  src={Noiva}
                   alt="suitcase"
                   sx={{ height: 150, my: 2 }}
                 />
@@ -114,7 +117,7 @@ function ProductHowItWorks() {
               <Box sx={item}>
                 <Box
                   component="img"
-                  src="/src/assets/noivo.png"
+                  src={Noivo}
                   sx={{ height: 150, my: 2 }}
                   alt="graph"
                 />
