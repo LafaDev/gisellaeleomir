@@ -1,0 +1,191 @@
+import * as React from "react";
+import { useState } from "react";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Typography from "../components/Typography";
+import CheckIcon from "@mui/icons-material/Check";
+import PersonIcon from "@mui/icons-material/Person";
+import CloseIcon from "@mui/icons-material/Close";
+
+// Example guest list
+const initialGuests = [
+  "Maria Silva",
+  "Ana Costa",
+  "Carlos Souza",
+  "Fernanda Lima",
+];
+
+// Type for guest status
+type GuestStatus = "pending" | "going" | "notGoing";
+
+function ProductValues() {
+  const [statuses, setStatuses] = useState<Record<string, GuestStatus>>({});
+
+  const toggleStatus = (name: string) => {
+    setStatuses((prev) => {
+      const current = prev[name] || "pending";
+      let next: GuestStatus;
+
+      if (current === "pending") next = "going";
+      else if (current === "going") next = "notGoing";
+      else next = "pending";
+
+      return { ...prev, [name]: next };
+    });
+  };
+
+  const getButtonProps = (status: GuestStatus) => {
+    switch (status) {
+      case "going":
+        return {
+          variant: "contained",
+          color: "success" as const,
+          startIcon: <CheckIcon />,
+        };
+      case "notGoing":
+        return {
+          variant: "contained",
+          color: "error" as const,
+          startIcon: <CloseIcon />,
+        };
+      default:
+        return {
+          variant: "outlined",
+          color: "primary" as const,
+          startIcon: <PersonIcon />,
+        };
+    }
+  };
+
+  return (
+    <Box
+      component="section"
+      id="confirmation"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        py: { xs: 0, md: 6 },
+        bgcolor: "#f5f5f5",
+      }}
+    >
+      {/* Card container */}
+      <Box
+        sx={{
+          bgcolor: "background.paper",
+          borderRadius: 2,
+          boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+          p: { xs: 1, md: 5 },
+          maxWidth: 600,
+          width: "100%",
+        }}
+      >
+        {/* Título */}
+        <Typography
+          variant="h3"
+          align="center"
+          sx={{
+            fontFamily: "'Parisienne', cursive",
+            mb: { xs: 4, sm: 4, md: 3 },
+            fontWeight: "normal", // Parisienne é fina, normal fica melhor
+            color: "primary.main",
+            textShadow: "1px 1px 4px rgba(0,0,0,0.15)",
+          }}
+        >
+          Você foi escolhido para esse momento
+        </Typography>
+        {/* Botões de convidados */}
+        <Grid container spacing={3} direction="column" alignItems="center">
+          {initialGuests.map((guest) => {
+            const status = statuses[guest] || "pending";
+            const buttonProps = getButtonProps(status);
+
+            return (
+              <Grid item key={guest} sx={{ width: "100%" }}>
+                <Button
+                  {...buttonProps}
+                  onClick={() => toggleStatus(guest)}
+                  sx={{
+                    borderRadius: "50px",
+                    px: 4,
+                    py: 1.5,
+                    textTransform: "none",
+                    fontSize: 16,
+                    width: "100%",
+                    boxShadow: 2,
+                    transition: "transform 0.2s, box-shadow 0.2s",
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow: 4,
+                    },
+                    "&:focus": { outline: "none" },
+                  }}
+                >
+                  {guest}
+                </Button>
+              </Grid>
+            );
+          })}
+        </Grid>
+
+        {/* Resumo */}
+        <Box sx={{ mt: 5 }}>
+          {Object.values(statuses).some((s) => s === "going") && (
+            <Typography
+              variant="h6"
+              sx={{ mb: 1, color: "success.main", fontWeight: 500 }}
+            >
+              Confirmados:{" "}
+              {Object.entries(statuses)
+                .filter(([_, s]) => s === "going")
+                .map(([name]) => name)
+                .join(", ")}
+            </Typography>
+          )}
+
+          {Object.values(statuses).some((s) => s === "notGoing") && (
+            <Typography
+              variant="h6"
+              sx={{ color: "error.main", fontWeight: 500 }}
+            >
+              Não irão:{" "}
+              {Object.entries(statuses)
+                .filter(([_, s]) => s === "notGoing")
+                .map(([name]) => name)
+                .join(", ")}
+            </Typography>
+          )}
+        </Box>
+
+        {/* Botão final */}
+        <Box sx={{ mt: 0 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{
+              mb: 2,
+              borderRadius: "50px",
+              px: 6,
+              py: 1.8,
+              fontSize: 18,
+              fontWeight: "bold",
+              textTransform: "none",
+              boxShadow: 3,
+              transition: "transform 0.2s, box-shadow 0.2s",
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: 6,
+              },
+            }}
+            onClick={() => alert("Presença confirmada!")}
+          >
+            Confirmar minha presença e de meus acompanhantes
+          </Button>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+
+export default ProductValues;
