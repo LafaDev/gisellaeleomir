@@ -11,14 +11,21 @@ import Typography from "@mui/material/Typography";
 import imgGl from "/src/assets/gl.png";
 
 // Icons
-import HelpIcon from "@mui/icons-material/Help"; // exemplo de logo no canto esquerdo
+import HelpIcon from "@mui/icons-material/Help";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 function AppAppBar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [value, setValue] = React.useState(1);
+  const [value, setValue] = React.useState("confirmation");
+
+  const handleChange = (_: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+    if (newValue === "information") handleScrollTo("information");
+    if (newValue === "confirmation") handleScrollTo("confirmation");
+    if (newValue === "location") handleScrollTo("location");
+  };
 
   const handleScrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -34,27 +41,28 @@ function AppAppBar() {
         top: isMobile ? "auto" : 0,
         bottom: isMobile ? 0 : "auto",
         px: 0,
-        backgroundColor: "#1F1F1F",
+        backgroundColor: "#F6F2FB",
       }}
     >
       <Toolbar sx={{ justifyContent: "space-between", px: 2 }}>
         {!isMobile && (
           <>
-            {/* Canto Esquerdo (Logo ou ícone) */}
+            {/* Logo canto esquerdo */}
             <Box
               component="img"
               src={imgGl}
-              alt="curvy lines"
+              alt="logo"
               sx={{
-                color: "white",
-                marginTop: '25px',
+                marginTop: "25px",
                 display: "flex",
                 alignItems: "center",
                 height: "250%",
-                width: 'auto',
+                width: "auto",
                 opacity: 1,
               }}
             />
+
+            {/* Links centrais */}
             <Box
               sx={{
                 display: "flex",
@@ -86,7 +94,7 @@ function AppAppBar() {
               </Typography>
             </Box>
 
-            {/* Canto Direito (Botão arredondado PRESENÇA) */}
+            {/* Botão canto direito */}
             <Button
               variant="contained"
               color="secondary"
@@ -103,33 +111,57 @@ function AppAppBar() {
           </>
         )}
 
-        {/* Mobile BottomNavigation */}
+        {/* Mobile BottomNavigation atualizado */}
         {isMobile && (
           <BottomNavigation
-            showLabels={false}
             value={value}
-            onChange={(_, newValue) => {
-              setValue(newValue);
-              if (newValue === 0) handleScrollTo("information");
-              if (newValue === 1) handleScrollTo("confirmation");
-              if (newValue === 2) handleScrollTo("location");
-            }}
+            onChange={handleChange}
             sx={{
               width: "100%",
-              bgcolor: theme.palette.primary.main,
+              bgcolor: "#F6F2FB",
             }}
           >
             <BottomNavigationAction
-              icon={<HelpIcon sx={{ color: "white" }} />}
-              sx={{ color: "white" }}
+              disableRipple
+              label="Info"
+              value="information"
+              icon={<HelpIcon />}
+              sx={{
+                "&.Mui-selected": {
+                  color: "#9A84B7",
+                },
+                "&:focus": {
+                  outline: "none",
+                },
+              }}
             />
             <BottomNavigationAction
-              icon={<HowToRegIcon sx={{ fontSize: 40, color: "white" }} />}
-              sx={{ color: "white" }}
+              disableRipple
+              label="Presença"
+              value="confirmation"
+              icon={<HowToRegIcon />}
+              sx={{
+                "&.Mui-selected": {
+                  color: "#9A84B7",
+                },
+                "&:focus": {
+                  outline: "none",
+                },
+              }}
             />
             <BottomNavigationAction
-              icon={<LocationOnIcon sx={{ color: "white" }} />}
-              sx={{ color: "white" }}
+              disableRipple
+              label="Local"
+              value="location"
+              icon={<LocationOnIcon />}
+              sx={{
+                "&.Mui-selected": {
+                  color: "#9A84B7",
+                },
+                "&:focus": {
+                  outline: "none",
+                },
+              }}
             />
           </BottomNavigation>
         )}

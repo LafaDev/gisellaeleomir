@@ -1,9 +1,7 @@
 import Button from '../components/Button';
 import Typography from '../components/Typography';
 import ProductHeroLayout from './ProductHeroLayout';
-import backgroundImage from "/src/images/vista.jpeg";
-
-// 'https://images.unsplash.com/photo-1534854638093-bada1813ca19?auto=format&fit=crop&w=1400';
+import backgroundImage from "/src/images/landing.jpeg";
 
 export default function ProductHero() {
   const handleScrollTo = (id: string) => {
@@ -17,8 +15,15 @@ export default function ProductHero() {
     <ProductHeroLayout
       sxBackground={{
         backgroundImage: `url(${backgroundImage})`,
-        backgroundColor: '#6096a3', // Average color of the background image.
-        backgroundPosition: 'center',
+        backgroundColor: "#6096a3",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "240%",
+        backgroundPosition: "50% 0%",
+        transition: "background-size 8s ease, background-position 8s ease",
+        "&:hover": {
+          backgroundSize: "150%",
+          backgroundPosition: "40% 50%",
+        },
       }}
     >
       {/* Increase the network loading priority of the background image. */}
@@ -33,18 +38,47 @@ export default function ProductHero() {
         variant="h2"
         marked="center"
         sx={{
-          fontFamily: "'Otegan', cursive",
+          mt: { xs: 27.5, sm: 2 },
+          fontFamily: `"Cinzel", serif !important`,
+          fontWeight: 400,
+          fontSize: "clamp(2.0rem, 5vw, 3rem)", 
+          textTransform: "uppercase"
         }}
       >
-        Gisella e Leomir
+        Leomir e Gisella 
       </Typography>
       <Typography
         color="inherit"
         align="center"
         variant="h5"
-        sx={{ mb: { xs: 10, sm: 10, md: 2 }, mt: { xs: 2, sm: 2 } }}
+        sx={
+          { 
+            fontFamily: "Quicksand",
+            mt: { xs: 2, sm: 2 },
+            fontWeight: 'bold',
+            textTransform: "uppercase"
+          }
+        }
       >
-        convidam você para a celebração de sua união.
+        18 de outubro de 2025
+      </Typography>
+      
+      <Typography
+        color="inherit"
+        align="center"
+        variant="h6"
+        sx={
+            { 
+              fontFamily: "Quicksand",
+              fontSize: 14,
+              mb: { xs: 2, sm: 10, md: 2 },
+              mt: { xs: 2, sm: 2 },
+              fontWeight: 100,
+              textTransform: "uppercase"
+            }
+          }
+      >
+        RIO DE JANEIRO
       </Typography>
       
       {/* <Button
@@ -60,11 +94,13 @@ export default function ProductHero() {
       <Button
         color="secondary"
         variant="contained"
-        size='large'
+        size='small'
         component="a"
         sx={{
+          backgroundColor: "#9A84B7",
+          color: "white",
           minWidth: 200,
-          mt: { xs: 4, md: 0 },
+          mt: { xs: 2.5, md: 0 },
           textTransform: "none",
           fontWeight: "bold",
           px: { xs: 3, md: 0 },

@@ -3,7 +3,6 @@ import type { Theme } from '@mui/material/styles';
 import type { SxProps } from '@mui/system';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import wonder from '/src/images/Hero/productHeroWonder.png';
 
 const ProductHeroLayoutRoot = styled('section')(({ theme }) => ({
   color: theme.palette.common.white,
@@ -48,12 +47,6 @@ export default function ProductHeroLayout(
           alignItems: 'center',
         }}
       >
-        <img
-          src={wonder}
-          alt="wonder"
-          width="147"
-          height="80"
-        />
         {children}
         <Box
           sx={{

@@ -8,6 +8,8 @@ import ProductHowItWorks from './modules/views/ProductHowItWorks';
 import ProductCTA from './modules/views/ProductCTA';
 import AppAppBar from './modules/views/AppAppBar';
 import withRoot from './modules/withRoot';
+import Info from './modules/views/Info';
+import Casal from './modules/views/Casal';
 
 function Index() {
   return (
@@ -15,6 +17,8 @@ function Index() {
       <AppAppBar />
       <ProductHero />
       <ProductHowItWorks />
+      <Casal />
+      <Info />
       <ProductValues />
       <ProductCTA />
       {/* <ProductCategories /> */}
