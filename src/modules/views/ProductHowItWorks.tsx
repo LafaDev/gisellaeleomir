@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import type { Theme } from "@mui/material/styles";
-import { type SxProps } from "@mui/system";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "../components/Typography";
