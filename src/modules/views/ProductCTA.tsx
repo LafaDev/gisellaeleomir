@@ -76,7 +76,7 @@ function ProductCTA() {
         href={mapLink}
         target="_blank"
         rel="noopener noreferrer"
-        sx={{ px: 5, py: 2 }}
+        sx={{ px: 5, py: 2, backgroundColor: "#9A84B7" }}
       >
         Abrir no mapa
       </Button>
