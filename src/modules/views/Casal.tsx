@@ -166,13 +166,13 @@ function Casal() {
           sx={{
             position: "relative",
             width: "100%",
-            maxWidth: 600,
+            maxWidth: 900,
             mt: 4,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             px: 1,
-            height: 300,
+            height: { xs: 300, sm: 500 },
           }}
           // Pause on hover / touch
           onMouseEnter={() => setPaused(true)}

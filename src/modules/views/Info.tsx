@@ -41,7 +41,6 @@ function Info() {
     >
       <Container
         sx={{
-          mt: { xs: 1 },
           mb: 2,
           position: "relative",
           display: "flex",
