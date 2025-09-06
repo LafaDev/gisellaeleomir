@@ -12,6 +12,7 @@ const heading: SxProps<Theme> = {
   textTransform: "uppercase",
   textAlign: "center",
   mb: 2,
+  color: "#757472",
 };
 
 const quote: SxProps<Theme> = {

@@ -24,12 +24,16 @@ function ProductCTA() {
       <Typography
         variant="h4"
         sx={{
+          color: "#757472",
           mb: 2,
           mt: { xs: 2, md: 10 }, // espaçamento responsivo
+          fontFamily: `"Cinzel", sans-serif`,
           textAlign: "center",   // centraliza o texto
           whiteSpace: "normal",  // garante que ele quebre naturalmente
-          fontSize: { xs: "1.8rem", md: "2.5rem" }, // opcional: menor no mobile
+          fontWeight: 400,
+          fontSize: { xs: "1.5rem", md: "2.5rem" }, // opcional: menor no mobile
           lineHeight: 1.2,
+          textTransform: "uppercase",
         }}
       >
         Onde vai acontecer

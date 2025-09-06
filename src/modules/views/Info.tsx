@@ -50,6 +50,7 @@ function Info() {
           marked="center"
           color="inherit"
           sx={{
+            color: "#757472",
             fontFamily: `"Cinzel", sans-serif !important`,
             fontWeight: 400,
             fontSize: "clamp(2.0rem, 8vw, 3rem)",

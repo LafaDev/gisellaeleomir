@@ -73,6 +73,7 @@ function ProductValues() {
             variant="h3"
             align="center"
             sx={{
+              color: "#757472",
               fontFamily: "Cinzel",
               fontSize: 29,
               mb: { xs: 4, sm: 4, md: 3 },

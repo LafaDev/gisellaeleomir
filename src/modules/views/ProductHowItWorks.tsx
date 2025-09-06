@@ -76,6 +76,7 @@ function ProductHowItWorks() {
           sx={{
             textTransform: "uppercase",
             fontFamily: "'Cinzel', serif",
+            color: "#757472",
             fontWeight: "normal",
             mb: 1,
             textAlign: { xs: "center", md: "center" },
