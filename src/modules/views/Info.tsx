@@ -7,6 +7,8 @@ import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import MobileOffIcon from "@mui/icons-material/MobileOff";
 import type { Theme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const item: SxProps<Theme> = {
   display: "flex",
@@ -28,6 +30,10 @@ const number = {
 };
 
 function Info() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+
   return (
     <Box
       component="section"
@@ -35,7 +41,7 @@ function Info() {
     >
       <Container
         sx={{
-          mt: 1,
+          mt: { xs: 1 },
           mb: 2,
           position: "relative",
           display: "flex",
@@ -44,7 +50,7 @@ function Info() {
         }} 
           id="information"
       >
-        <br />
+        {isMobile ? <br /> : Array(5).fill(<br />)}
         <Typography
           variant="h2"
           marked="center"

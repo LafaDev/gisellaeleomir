@@ -99,10 +99,12 @@ function AppAppBar() {
               variant="contained"
               color="secondary"
               sx={{
+                backgroundColor: "#9A84B7",
                 borderRadius: "50px",
                 textTransform: "none",
                 fontWeight: "bold",
                 px: 3,
+                "&:focus": { outline: "none" },
               }}
               onClick={() => handleScrollTo("confirmation")}
             >
