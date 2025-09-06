@@ -62,8 +62,8 @@ function Index() {
       <Box
         sx={{
           position: "fixed",
-          bottom: 90,
-          right: 10,
+          bottom: { xs: 90, sm: 50 },
+          right: { xs: 10, sm: 70 },
           opacity: showScroll ? 1 : 0,
           transition: "opacity 0.15s",
           pointerEvents: showScroll ? "auto" : "none", // prevents clicks when hidden
