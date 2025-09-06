@@ -35,14 +35,31 @@ function Info() {
     >
       <Container
         sx={{
-          mt: 0,
-          mb: 15,
+          mt: 1,
+          mb: 2,
           position: "relative",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-        }}
+        }} 
+          id="information"
       >
+        <br />
+        <Typography
+          variant="h2"
+          marked="center"
+          color="inherit"
+          sx={{
+            fontFamily: `"Cinzel", sans-serif !important`,
+            fontWeight: 400,
+            fontSize: "clamp(2.0rem, 8vw, 3rem)",
+            textTransform: "uppercase",
+            textAlign: "center",
+            mb: 7,
+          }}
+        >
+          Informações Importantes
+        </Typography>
         {/* Regras */}
         <div id="or_grid">
           <Grid container spacing={5}>
@@ -50,7 +67,8 @@ function Info() {
               <Box sx={item}>
                 <Box sx={number}>1. Seja pontual.</Box>
                 <AccessAlarmIcon sx={{ fontSize: 80, color: "#4F4A4A", mb: 2 }} />
-                <Typography variant="h5" align="center">
+                <Typography variant="h5" align="center" sx={{ fontSize: 17 }}>
+                  <b>A cerimônia não irá atrasar. </b><br />
                   Chegar no horário demonstra respeito aos noivos e à cerimônia.
                 </Typography>
               </Box>
@@ -59,8 +77,9 @@ function Info() {
               <Box sx={item}>
                 <Box sx={number}>2. Vista-se de acordo.</Box>
                 <CheckroomIcon sx={{ fontSize: 80, color: "#4F4A4A", mb: 2 }} />
-                <Typography variant="h5" align="center">
-                  Escolha roupas compatíveis com a cerimónia.
+                <Typography variant="h5" align="center" sx={{ fontSize: 17 }}>
+                  <b>Escolha roupas compatíveis com a cerimónia. </b><br />
+                  As cores branco e bege claro são exclusivas dos noivos.
                 </Typography>
               </Box>
             </Grid>
@@ -68,8 +87,8 @@ function Info() {
               <Box sx={item}>
                 <Box sx={number}>3. Respeito o momento.</Box>
                 <MobileOffIcon sx={{ fontSize: 80, color: "#4F4A4A", mb: 2 }} />
-                <Typography variant="h5" align="center">
-                  Valorize o momento e minimize distrações.
+                <Typography variant="h5" align="center" sx={{ fontSize: 17 }}>
+                  <b>Valorize o momento e minimize distrações.</b>
                 </Typography>
               </Box>
             </Grid>

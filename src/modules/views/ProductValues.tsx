@@ -1,103 +1,66 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "../components/Typography";
-import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import Snackbar from "../components/Snackbar";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import Grid from "@mui/material/Grid";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import CheckIcon from "@mui/icons-material/Check";
-import PersonIcon from "@mui/icons-material/Person";
 import CloseIcon from "@mui/icons-material/Close";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
-// Example guest list
+// Guest list
 const initialGuests = ["Maria Silva", "Carlos Souza", "Fernanda Lima"];
 
-// Type for guest status
+// Guest status
 type GuestStatus = "pending" | "going" | "notGoing";
-
-// Type for button props
-type MUIButtonProps = {
-  variant: "text" | "outlined" | "contained";
-  color:
-    | "primary"
-    | "secondary"
-    | "success"
-    | "error"
-    | "info"
-    | "warning"
-    | "inherit";
-  startIcon: React.ReactNode;
-};
 
 function ProductValues() {
   const [statuses, setStatuses] = useState<Record<string, GuestStatus>>({});
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // Snackbar state
-  const [snackOpen, setSnackOpen] = useState(false);
-
-  const toggleStatus = (name: string) => {
-    setStatuses((prev) => {
-      const current = prev[name] || "pending";
-      let next: GuestStatus;
-
-      if (current === "pending") next = "going";
-      else if (current === "going") next = "notGoing";
-      else next = "pending";
-
-      return { ...prev, [name]: next };
-    });
+  const handleStatusChange = (guest: string, status: GuestStatus) => {
+    setStatuses((prev) => ({ ...prev, [guest]: status }));
   };
 
-  const getButtonProps = (status: GuestStatus): MUIButtonProps => {
-    switch (status) {
-      case "going":
-        return {
-          variant: "contained" as const,
-          color: "success" as const,
-          startIcon: <CheckIcon />,
-        };
-      case "notGoing":
-        return {
-          variant: "contained" as const,
-          color: "error" as const,
-          startIcon: <CloseIcon />,
-        };
-      default:
-        return {
-          variant: "outlined" as const,
-          color: "inherit" as const,
-          startIcon: <PersonIcon />,
-        };
+  // const handleDialogOpen = () => setDialogOpen(true);
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    setErrorMessage("");
+  };
+
+  const handleFinalConfirm = () => {
+    const allSelected = initialGuests.every(
+      (guest) => statuses[guest] && statuses[guest] !== "pending"
+    );
+
+    if (!allSelected) {
+      setErrorMessage("Por favor, selecione a presença de todos os convidados.");
+      return;
     }
-  };
 
-  const handleSnackOpen = () => setSnackOpen(true);
-  const handleSnackClose = () => setSnackOpen(false);
+    setConfirmed(true);
+    handleDialogClose();
+  };
 
   return (
-    <Box
-      id="confirmation"
-      sx={{
-        mb: { sx: 0, md: 2 },
-        paddingTop: { sx: 0, md: 5 },
-        transition: "transform 0.3s ease",
-        transform: snackOpen ? "translateY(-60px)" : "translateY(0)", // efeito de deslizar para cima
-      }}
-    >
+    <Box id="confirmation" sx={{ paddingTop: { sx: 5, md: 5 } }}>
+      <br /> <br />
       <Box
         component="section"
-        id="confirmationBackground"
         sx={{
-          mt: { sx: 2 },
           display: "flex",
           justifyContent: "center",
           overflow: "hidden",
-          backgroundPosition: "center",
           py: { xs: 0.1, sm: 2, md: 8 },
         }}
       >
-        {/* Card container */}
         <Box
-          id="confirmationBox"
           sx={{
             bgcolor: "background.paper",
             borderRadius: 4,
@@ -107,68 +70,47 @@ function ProductValues() {
             width: "100%",
           }}
         >
-          {/* Title */}
           <Typography
             variant="h3"
             align="center"
             sx={{
-              fontFamily: "'Parisienne', cursive",
+              fontFamily: "Cinzel",
+              fontSize: 29,
               mb: { xs: 4, sm: 4, md: 3 },
               fontWeight: "normal",
-              color: "primary.main",
               textShadow: "1px 1px 4px rgba(0,0,0,0.15)",
             }}
           >
             Você foi escolhido para esse momento
           </Typography>
 
-          {/* Guest buttons */}
-          <Grid container spacing={3} direction="column" alignItems="center">
-            {initialGuests.map((guest) => {
-              const status = statuses[guest] || "pending";
-              const buttonProps = getButtonProps(status);
+          <Typography
+            align="center"
+            sx={{
+              fontFamily: "Quicksand, sans-serif",
+              mb: 2,
+              fontSize: "1.1rem",
+              color: confirmed ? "#48A64C" : "text.primary",
+              fontWeight: confirmed ? "bold" : "normal",
+            }}
+          >
+            {confirmed
+              ? "Sua presença foi confirmada"
+              : "Confirme aqui com antecedência sua presença, pois a entrada será somente com o nome na lista."}
+          </Typography>
 
-              return (
-                <Grid key={guest} sx={{ width: "100%" }}>
-                  <Button
-                    {...buttonProps}
-                    onClick={() => toggleStatus(guest)}
-                    sx={{
-                      borderRadius: "50px",
-                      px: 4,
-                      py: 1.5,
-                      textTransform: "none",
-                      fontSize: 16,
-                      width: "100%",
-                      boxShadow: 2,
-                      transition: "transform 0.2s, box-shadow 0.2s",
-                      "&:hover": {
-                        transform: "translateY(-2px)",
-                        boxShadow: 4,
-                      },
-                      "&:focus": { outline: "none" },
-                      ...(status === "pending" && {
-                        bgcolor: "white",
-                        color: "black",
-                        border: "1px solid #ccc",
-                        "&:hover": { bgcolor: "#f5f5f5" },
-                      }),
-                    }}
-                  >
-                    {guest}
-                  </Button>
-                </Grid>
-              );
-            })}
-          </Grid>
+          {!confirmed && (
+            <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+              <ArrowDownwardIcon sx={{ fontSize: 30, color: "#9A84B7" }} />
+            </Box>
+          )}
 
-          {/* Final confirm button */}
           <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
             <Button
               variant="contained"
-              color="primary"
               size="large"
               sx={{
+                backgroundColor: confirmed ? "#48A64C" : "#9A84B7",
                 borderRadius: "50px",
                 px: 2,
                 py: 1.8,
@@ -176,25 +118,127 @@ function ProductValues() {
                 fontWeight: "bold",
                 textTransform: "none",
                 boxShadow: 3,
-                transition: "transform 0.2s, box-shadow 0.2s",
-                "&:hover": {
-                  transform: "translateY(-2px)",
-                  boxShadow: 6,
+                "&:focus": {
+                  outline: "none"
                 },
-                "&:focus": { outline: "none" },
+                "&:hover": {
+                  backgroundColor: confirmed ? "#48A64C" : "#9A84B7",
+                },
               }}
-              onClick={handleSnackOpen} // abrir Snackbar
+              onClick={confirmed ? undefined : () => setDialogOpen(true)}
             >
-              Confirmar minha presença e de meus acompanhantes
+              {confirmed ? <CheckIcon /> : "Confirmar minha presença e de meus acompanhantes"}
             </Button>
           </Box>
 
-          {/* Snackbar */}
-          <Snackbar
-            open={snackOpen}
-            closeFunc={handleSnackClose}
-            message="Presença confirmada!"
-          />
+          <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
+            <DialogTitle sx={{ textAlign: "center" }}>Selecione os convidados</DialogTitle>
+            <DialogContent>
+              <Grid container spacing={2} direction="column" alignItems="center">
+                {initialGuests.map((guest) => {
+                  const status = statuses[guest] || "pending";
+
+                  return (
+                    // <Grid item xs={12} key={guest} sx={{ width: "100%" }}>
+                    <Grid item key={guest} sx={{ width: "100%" }}>
+                      <ToggleButtonGroup
+                        exclusive
+                        value={status}
+                        sx={{
+                          width: "100%",
+                          borderRadius: "50px",
+                          overflow: "hidden",
+                          boxShadow: "0 4px 10px rgba(0,0,0,0.5)", // darker shadow
+                        }}
+                      >
+                        {/* Left X */}
+                        <ToggleButton
+                          value="notGoing"
+                          onClick={() => handleStatusChange(guest, "notGoing")}
+                          sx={{
+                            width: "20%",
+                            border: "none",
+                            backgroundColor: "#D94343",
+                            "&:hover": { backgroundColor: "#D94343" },
+                            "&.Mui-selected": { backgroundColor: "#D94343" }, // remove selected effect
+                            "&.Mui-selected:hover": { backgroundColor: "#D94343" },
+                            "&:focus": { outline: "none" },
+                            "&:active": { transform: "none" },
+                          }}
+                        >
+                          <CloseIcon sx={{ color: "#fff" }} />
+                        </ToggleButton>
+
+                        {/* Middle name - changes color */}
+                        <Box
+                          sx={{
+                            width: "70%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            backgroundColor:
+                              status === "going"
+                                ? "#48A64C"
+                                : status === "notGoing"
+                                ? "#D94343"
+                                : "#f5f5f5",
+                            color: status !== "pending" ? "#fff" : "#000",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {guest}
+                        </Box>
+
+                        {/* Right Yes */}
+                        <ToggleButton
+                          value="going"
+                          onClick={() => handleStatusChange(guest, "going")}
+                          sx={{
+                            width: "20%",
+                            border: "none",
+                            backgroundColor: "#48A64C",
+                            "&:hover": { backgroundColor: "#48A64C" },
+                            "&.Mui-selected": { backgroundColor: "#48A64C" },
+                            "&.Mui-selected:hover": { backgroundColor: "#48A64C" },
+                            "&:focus": { outline: "none" },
+                            "&:active": { transform: "none" },
+                          }}
+                        >
+                          <CheckIcon sx={{ color: "#fff" }} />
+                        </ToggleButton>
+                      </ToggleButtonGroup>
+                    </Grid>
+                  );
+                })}
+              </Grid>
+
+              {errorMessage && (
+                <Typography color="error" align="center" sx={{ mt: 2, fontSize: "0.95rem" }}>
+                  {errorMessage}
+                </Typography>
+              )}
+
+              <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
+                <Button
+                  variant="contained"
+                  onClick={handleFinalConfirm}
+                  sx={{
+                    backgroundColor: "#9A84B7",
+                    borderRadius: "50px",
+                    px: 3,
+                    py: 1.5,
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    textTransform: "none",
+                    "&:focus": { outline: "none" },
+                  }}
+                  startIcon={<CheckIcon />}
+                >
+                  Confirmar presença
+                </Button>
+              </Box>
+            </DialogContent>
+          </Dialog>
         </Box>
       </Box>
     </Box>

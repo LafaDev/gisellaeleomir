@@ -37,9 +37,8 @@ function ProductCTA() {
       <Typography variant="body1" sx={{ mb: 4, textAlign: "center" }}>
         <b>Mundo das Festas – Salão de Festa e Buffet</b>
         <br />
-        R. Inacio Serro, 83 – Vila Tiradentes, São João de Meriti – RJ
-      </Typography>
-
+        R. Inácio Serra, 83 – Vila Tiradentes, São João de Meriti – RJ
+        </Typography>
       {/* Google Maps iframe com marcador */}
       <Box
         sx={{

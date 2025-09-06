@@ -6,7 +6,7 @@ import type { Theme } from "@mui/material/styles";
 import sacadaImage from "/src/images/sacada.jpg"; // make sure path is correct
 
 const heading: SxProps<Theme> = {
-  fontFamily: `"Quicksand", sans-serif !important`,
+  fontFamily: `"Cinzel", sans-serif !important`,
   fontWeight: 400,
   fontSize: "clamp(2.0rem, 8vw, 3rem)",
   textTransform: "uppercase",
@@ -59,7 +59,7 @@ function Casal() {
       >
         {/* Heading */}
         <Typography variant="h2" sx={heading} marked="center" color="inherit">
-          CASAL
+          O CASAL
         </Typography>
 
         {/* Main Image */}
@@ -68,16 +68,17 @@ function Casal() {
           src={sacadaImage}
           alt="Casal"
           sx={{
-            width: "100%",
+            height: "60%",
+            width: "60%",
             maxWidth: 500,
             borderRadius: 2,
-            mb: 3,
+            mb: 2,
           }}
         />
 
         {/* Description (italic & thin) */}
-        <Typography sx={{ fontStyle: "italic", fontWeight: 400, textAlign: "center", fontSize: "clamp(1rem, 4vw, 1.5rem)", marginBottom: 3 }} variant="h6">
-          Com a ajuda de Deus, muita perseverança, dedicação e planejamento, estamos realizando um sonho.... Iremos nos casar! ...
+        <Typography sx={{ fontStyle: "italic", fontWeight: 400, textAlign: "center", fontSize: "clamp(0.9rem, 4vw, 1.5rem)", marginBottom: 3 }} variant="h6">
+          Com a ajuda de Deus, muita perseverança, dedicação e planejamento, estamos realizando um sonho... <br />Iremos nos casar!
         </Typography>
 
         {/* Stylized Quote (with vertical line) */}
