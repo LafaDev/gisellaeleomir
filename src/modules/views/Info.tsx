@@ -95,7 +95,8 @@ function Info() {
                 <Box sx={number}>3. Respeito o momento.</Box>
                 <MobileOffIcon sx={{ fontSize: 80, color: "#4F4A4A", mb: 2 }} />
                 <Typography variant="h5" align="center" sx={{ fontSize: 17 }}>
-                  <b>Valorize o momento e minimize distrações.</b>
+                  <b>Valorize o momento e minimize distrações.</b><br />
+                  Não atrapalhe a equipe de foto e vídeo.
                 </Typography>
               </Box>
             </Grid>

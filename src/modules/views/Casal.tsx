@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "../components/Typography";
@@ -14,6 +14,10 @@ import carrossel2 from "/src/images/carrossel2.jpg";
 import carrossel3 from "/src/images/carrossel3.jpg";
 import carrossel4 from "/src/images/carrossel4.jpg";
 import carrossel5 from "/src/images/carrossel5.jpg";
+import carrossel6 from "/src/images/carrossel6.jpg";
+import carrossel7 from "/src/images/carrossel7.jpg";
+import carrossel8 from "/src/images/carrossel8.jpg";
+import carrossel9 from "/src/images/carrossel9.jpg";
 
 const heading: SxProps<Theme> = {
   fontFamily: `"Cinzel", sans-serif !important`,
@@ -49,26 +53,48 @@ const additionalText: SxProps<Theme> = {
   px: 2,
 };
 
-const carouselImages = [carrossel1, carrossel2, carrossel3, carrossel4, carrossel5];
+const carouselImages = [
+  carrossel1,
+  carrossel2,
+  carrossel3,
+  carrossel4,
+  carrossel5,
+  carrossel6,
+  carrossel7,
+  carrossel8,
+  carrossel9,
+];
 
 function Casal() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % carouselImages.length);
+    resetTimer();
   };
 
   const handlePrev = () => {
     setActiveIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+    resetTimer();
   };
 
-  // Automatic carousel change every 4 seconds
+  const resetTimer = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (!paused) {
+      intervalRef.current = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % carouselImages.length);
+      }, 4000);
+    }
+  };
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      handleNext();
-    }, 4000); // change every 4s
-    return () => clearInterval(interval);
-  }, []);
+    resetTimer();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [paused]);
 
   return (
     <Box
@@ -103,6 +129,9 @@ function Casal() {
             maxWidth: 500,
             borderRadius: 2,
             mb: 2,
+            userSelect: "none",
+            pointerEvents: "none",
+            WebkitUserDrag: "none",
           }}
         />
 
@@ -145,6 +174,11 @@ function Casal() {
             px: 1,
             height: 300,
           }}
+          // Pause on hover / touch
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onTouchStart={() => setPaused(true)}
+          onTouchEnd={() => setPaused(false)}
         >
           {carouselImages.map((src, index) => (
             <Fade in={index === activeIndex} key={index} timeout={600} unmountOnExit>
@@ -157,11 +191,12 @@ function Casal() {
                   height: "100%",
                   objectFit: "cover",
                   borderRadius: 2,
-                  px: 0,
-                  py: 0,
                   position: "absolute",
                   top: 0,
                   left: 0,
+                  userSelect: "none",
+                  pointerEvents: "none", // disables clicking / long-press menu
+                  WebkitUserDrag: "none", // disables dragging on mobile
                 }}
               />
             </Fade>
