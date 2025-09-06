@@ -68,7 +68,6 @@ function Casal() {
           src={sacadaImage}
           alt="Casal"
           sx={{
-            height: "60%",
             width: "60%",
             maxWidth: 500,
             borderRadius: 2,

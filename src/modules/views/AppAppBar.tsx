@@ -73,21 +73,21 @@ function AppAppBar() {
             >
               <Typography
                 variant="button"
-                sx={{ color: "white", cursor: "pointer" }}
+                sx={{ color: "black", cursor: "pointer" }}
                 onClick={() => handleScrollTo("information")}
               >
                 Informações
               </Typography>
               <Typography
                 variant="button"
-                sx={{ color: "white", cursor: "pointer" }}
+                sx={{ color: "black", cursor: "pointer" }}
                 onClick={() => handleScrollTo("confirmation")}
               >
                 Confirmação
               </Typography>
               <Typography
                 variant="button"
-                sx={{ color: "white", cursor: "pointer" }}
+                sx={{ color: "black", cursor: "pointer" }}
                 onClick={() => handleScrollTo("location")}
               >
                 Localização
