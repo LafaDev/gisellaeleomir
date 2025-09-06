@@ -1,9 +1,19 @@
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "../components/Typography";
+import Button from "@mui/material/Button";
+import { Fade } from "@mui/material";
 import { type SxProps } from "@mui/system";
 import type { Theme } from "@mui/material/styles";
-import sacadaImage from "/src/images/sacada.jpg"; // make sure path is correct
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import sacadaImage from "/src/images/sacada.jpg";
+import carrossel1 from "/src/images/carrossel1.jpg";
+import carrossel2 from "/src/images/carrossel2.jpg";
+import carrossel3 from "/src/images/carrossel3.jpg";
+import carrossel4 from "/src/images/carrossel4.jpg";
+import carrossel5 from "/src/images/carrossel5.jpg";
 
 const heading: SxProps<Theme> = {
   fontFamily: `"Cinzel", sans-serif !important`,
@@ -39,7 +49,27 @@ const additionalText: SxProps<Theme> = {
   px: 2,
 };
 
+const carouselImages = [carrossel1, carrossel2, carrossel3, carrossel4, carrossel5];
+
 function Casal() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % carouselImages.length);
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+  };
+
+  // Automatic carousel change every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 4000); // change every 4s
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Box
       component="section"
@@ -76,21 +106,103 @@ function Casal() {
           }}
         />
 
-        {/* Description (italic & thin) */}
-        <Typography sx={{ fontStyle: "italic", fontWeight: 400, textAlign: "center", fontSize: "clamp(0.9rem, 4vw, 1.5rem)", marginBottom: 3 }} variant="h6">
-          Com a ajuda de Deus, muita perseverança, dedicação e planejamento, estamos realizando um sonho... <br />Iremos nos casar!
+        {/* Description */}
+        <Typography
+          sx={{
+            fontStyle: "italic",
+            fontWeight: 400,
+            textAlign: "center",
+            fontSize: "clamp(0.9rem, 4vw, 1.5rem)",
+            marginBottom: 3,
+          }}
+          variant="h6"
+        >
+          Com a ajuda de Deus, muita perseverança, dedicação e planejamento, estamos realizando um sonho... <br />
+          Iremos nos casar!
         </Typography>
 
-        {/* Stylized Quote (with vertical line) */}
+        {/* Stylized Quote */}
         <Typography sx={quote}>
           Sim, grandes coisas fez o Senhor por nós, por isso estamos alegres.
           <br /> Salmos 126:3
         </Typography>
 
-        {/* Additional Text (thin & left aligned) */}
+        {/* Additional Text */}
         <Typography sx={additionalText}>
           Estamos realizando um sonho e preparando tudo com muito carinho para curtirmos cada momento com nossos amigos e familiares!
         </Typography>
+
+        {/* Carousel */}
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+            maxWidth: 600,
+            mt: 4,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            px: 1,
+            height: 300,
+          }}
+        >
+          {carouselImages.map((src, index) => (
+            <Fade in={index === activeIndex} key={index} timeout={600} unmountOnExit>
+              <Box
+                component="img"
+                src={src}
+                alt={`Carousel ${index + 1}`}
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: 2,
+                  px: 0,
+                  py: 0,
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                }}
+              />
+            </Fade>
+          ))}
+
+          {/* Left / Right buttons with arrows */}
+          <Button
+            onClick={handlePrev}
+            sx={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              height: "100%",
+              width: "20%",
+              minWidth: 0,
+              bgcolor: "rgba(0,0,0,0.2)",
+              "&:hover": { bgcolor: "rgba(0,0,0,0.3)" },
+              "&:focus": { outline: "none" },
+              "&:active": { transform: "none", bgcolor: "rgba(0,0,0,0.2)" },
+            }}
+          >
+            <ArrowBackIosNewIcon sx={{ color: "#fff" }} />
+          </Button>
+          <Button
+            onClick={handleNext}
+            sx={{
+              position: "absolute",
+              right: 0,
+              top: 0,
+              height: "100%",
+              width: "20%",
+              minWidth: 0,
+              bgcolor: "rgba(0,0,0,0.2)",
+              "&:hover": { bgcolor: "rgba(0,0,0,0.3)" },
+              "&:focus": { outline: "none" },
+              "&:active": { transform: "none", bgcolor: "rgba(0,0,0,0.2)" },
+            }}
+          >
+            <ArrowForwardIosIcon sx={{ color: "#fff" }} />
+          </Button>
+        </Box>
       </Container>
     </Box>
   );

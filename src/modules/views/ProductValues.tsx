@@ -173,6 +173,7 @@ function ProductValues() {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
+                            textDecoration: status === "notGoing" ? 'line-through' : 'none',
                             backgroundColor:
                               status === "going"
                                 ? "#48A64C"
