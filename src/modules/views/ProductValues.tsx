@@ -28,7 +28,6 @@ function ProductValues() {
     setStatuses((prev) => ({ ...prev, [guest]: status }));
   };
 
-  // const handleDialogOpen = () => setDialogOpen(true);
   const handleDialogClose = () => {
     setDialogOpen(false);
     setErrorMessage("");
@@ -118,9 +117,7 @@ function ProductValues() {
                 fontWeight: "bold",
                 textTransform: "none",
                 boxShadow: 3,
-                "&:focus": {
-                  outline: "none"
-                },
+                "&:focus": { outline: "none" },
                 "&:hover": {
                   backgroundColor: confirmed ? "#48A64C" : "#9A84B7",
                 },
@@ -139,8 +136,7 @@ function ProductValues() {
                   const status = statuses[guest] || "pending";
 
                   return (
-                    // <Grid item xs={12} key={guest} sx={{ width: "100%" }}>
-                    <Grid item key={guest} sx={{ width: "100%" }}>
+                    <Grid key={guest} sx={{ width: "100%" }}>
                       <ToggleButtonGroup
                         exclusive
                         value={status}
@@ -148,7 +144,7 @@ function ProductValues() {
                           width: "100%",
                           borderRadius: "50px",
                           overflow: "hidden",
-                          boxShadow: "0 4px 10px rgba(0,0,0,0.5)", // darker shadow
+                          boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
                         }}
                       >
                         {/* Left X */}
@@ -160,7 +156,7 @@ function ProductValues() {
                             border: "none",
                             backgroundColor: "#D94343",
                             "&:hover": { backgroundColor: "#D94343" },
-                            "&.Mui-selected": { backgroundColor: "#D94343" }, // remove selected effect
+                            "&.Mui-selected": { backgroundColor: "#D94343" },
                             "&.Mui-selected:hover": { backgroundColor: "#D94343" },
                             "&:focus": { outline: "none" },
                             "&:active": { transform: "none" },
@@ -169,7 +165,7 @@ function ProductValues() {
                           <CloseIcon sx={{ color: "#fff" }} />
                         </ToggleButton>
 
-                        {/* Middle name - changes color */}
+                        {/* Middle name */}
                         <Box
                           sx={{
                             width: "70%",
