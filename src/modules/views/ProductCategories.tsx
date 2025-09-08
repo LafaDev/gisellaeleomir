@@ -23,20 +23,20 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 // gifts hardcoded
-const gift1 = "/src/images/gifts/gift1.jpeg";
-const gift2 = "/src/images/gifts/gift2.jpeg";
-const gift3 = "/src/images/gifts/gift3.jpeg";
-const gift4 = "/src/images/gifts/gift4.jpeg";
-const gift5 = "/src/images/gifts/gift5.jpeg";
-const gift6 = "/src/images/gifts/gift6.jpeg";
-const gift7 = "/src/images/gifts/gift7.jpeg";
-const gift8 = "/src/images/gifts/gift8.jpeg";
-const gift9 = "/src/images/gifts/gift9.jpeg";
-const gift10 = "/src/images/gifts/gift10.jpeg";
-const gift11 = "/src/images/gifts/gift11.jpeg";
-const gift12 = "/src/images/gifts/gift12.jpeg";
-const gift13 = "/src/images/gifts/gift13.jpeg";
-const gift14 = "/src/images/gifts/gift14.jpeg";
+import gift1 from "/src/images/gifts/gift1.jpeg";
+import gift2 from "/src/images/gifts/gift2.jpeg";
+import gift3 from "/src/images/gifts/gift3.jpeg";
+import gift4 from "/src/images/gifts/gift4.jpeg";
+import gift5 from "/src/images/gifts/gift5.jpeg";
+import gift6 from "/src/images/gifts/gift6.jpeg";
+import gift7 from "/src/images/gifts/gift7.jpeg";
+import gift8 from "/src/images/gifts/gift8.jpeg";
+import gift9 from "/src/images/gifts/gift9.jpeg";
+import gift10 from "/src/images/gifts/gift10.jpeg";
+import gift11 from "/src/images/gifts/gift11.jpeg";
+import gift12 from "/src/images/gifts/gift12.jpeg";
+import gift13 from "/src/images/gifts/gift13.jpeg";
+import gift14 from "/src/images/gifts/gift14.jpeg";
 
 const gifts = [
   { id: 1, title: "Ferro de Passar", price: "R$ 150,00", description: "Ferro de Passar a Seco Black Decker VFA1110TM2 com Base de Alumínio - 110V.", image: gift1, paymentCode: "PANELAS123" },
