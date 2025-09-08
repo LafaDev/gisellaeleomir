@@ -14,6 +14,7 @@ import imgGl from "/src/assets/gl.png";
 import HelpIcon from "@mui/icons-material/Help";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard"; // new icon
 
 function AppAppBar() {
   const theme = useTheme();
@@ -24,6 +25,7 @@ function AppAppBar() {
     setValue(newValue);
     if (newValue === "information") handleScrollTo("information");
     if (newValue === "confirmation") handleScrollTo("confirmation");
+    if (newValue === "gifts") handleScrollTo("gifts"); // new
     if (newValue === "location") handleScrollTo("location");
   };
 
@@ -88,6 +90,13 @@ function AppAppBar() {
               <Typography
                 variant="button"
                 sx={{ color: "#757472", cursor: "pointer" }}
+                onClick={() => handleScrollTo("gifts")} // new
+              >
+                Presentes
+              </Typography>
+              <Typography
+                variant="button"
+                sx={{ color: "#757472", cursor: "pointer" }}
                 onClick={() => handleScrollTo("location")}
               >
                 Localização
@@ -110,6 +119,24 @@ function AppAppBar() {
             >
               PRESENÇA
             </Button>
+            {/* New Presentes Button */}
+            {/* <Button
+              variant="contained"
+              color="secondary"
+              startIcon={<CardGiftcardIcon />}
+              sx={{
+                backgroundColor: "#9A84B7",
+                borderRadius: "50px",
+                textTransform: "none",
+                fontWeight: "bold",
+                px: 3,
+                ml: 2,
+                "&:focus": { outline: "none" },
+              }}
+              onClick={() => handleScrollTo("gifts")}
+            >
+              PRESENTES
+            </Button> */}
           </>
         )}
 
@@ -129,12 +156,8 @@ function AppAppBar() {
               value="information"
               icon={<HelpIcon />}
               sx={{
-                "&.Mui-selected": {
-                  color: "#9A84B7",
-                },
-                "&:focus": {
-                  outline: "none",
-                },
+                "&.Mui-selected": { color: "#9A84B7" },
+                "&:focus": { outline: "none" },
               }}
             />
             <BottomNavigationAction
@@ -143,12 +166,18 @@ function AppAppBar() {
               value="confirmation"
               icon={<HowToRegIcon />}
               sx={{
-                "&.Mui-selected": {
-                  color: "#9A84B7",
-                },
-                "&:focus": {
-                  outline: "none",
-                },
+                "&.Mui-selected": { color: "#9A84B7" },
+                "&:focus": { outline: "none" },
+              }}
+            />
+            <BottomNavigationAction
+              disableRipple
+              label="Presentes" // new
+              value="gifts"
+              icon={<CardGiftcardIcon />}
+              sx={{
+                "&.Mui-selected": { color: "#9A84B7" },
+                "&:focus": { outline: "none" },
               }}
             />
             <BottomNavigationAction
@@ -157,12 +186,8 @@ function AppAppBar() {
               value="location"
               icon={<LocationOnIcon />}
               sx={{
-                "&.Mui-selected": {
-                  color: "#9A84B7",
-                },
-                "&:focus": {
-                  outline: "none",
-                },
+                "&.Mui-selected": { color: "#9A84B7" },
+                "&:focus": { outline: "none" },
               }}
             />
           </BottomNavigation>

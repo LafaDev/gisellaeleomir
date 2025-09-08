@@ -7,6 +7,7 @@ import AppAppBar from "./modules/views/AppAppBar";
 import withRoot from "./modules/withRoot";
 import Info from "./modules/views/Info";
 import Casal from "./modules/views/Casal";
+import ProductCategories from "./modules/views/ProductCategories";
 
 import { Fab, Box } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -56,6 +57,7 @@ function Index() {
       <Casal />
       <Info />
       <ProductValues />
+      <ProductCategories />
       <ProductCTA />
 
       {/* Scroll-to-top Button */}

@@ -13,7 +13,7 @@ function ProductCTA() {
       component="section"
       id="location"
       sx={{
-        mt: 10,
+        mt: 2,
         mb: 10,
         display: "flex",
         flexDirection: "column",
