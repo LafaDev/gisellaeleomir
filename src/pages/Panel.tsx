@@ -17,6 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy"; // <-- new icon
 
 import * as GuestAPI from "../services/guestAPI";
 
@@ -153,10 +154,31 @@ export default function Panel() {
     }
   };
 
+  /** ------------------ Copy Link ------------------ */
+  const copyGuestLink = (tag: string) => {
+    const baseUrl = window.location.origin; // e.g. http://localhost:5173
+    const url = `${baseUrl}/${tag}`;
+    navigator.clipboard.writeText(url).then(() => {
+      alert("Link copiado!");
+    });
+  };
+
   /** ------------------ DataGrid Columns ------------------ */
   const columns: GridColDef[] = [
     { field: "name", headerName: "Nome", width: 200 },
-    { field: "tag", headerName: "Tag", width: 150 },
+    {
+      field: "tag",
+      headerName: "Tag",
+      width: 200,
+      renderCell: (params) => (
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography>{params.value}</Typography>
+          <IconButton size="small" onClick={() => copyGuestLink(params.value)}>
+            <ContentCopyIcon fontSize="small" />
+          </IconButton>
+        </Box>
+      ),
+    },
     {
       field: "going",
       headerName: "Vai?",
