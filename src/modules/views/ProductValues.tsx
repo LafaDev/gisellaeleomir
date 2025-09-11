@@ -12,13 +12,18 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
+// Props interface
+interface ProductValuesProps {
+  guestName?: string;
+}
+
 // Guest list
 const initialGuests = ["Maria Silva", "Carlos Souza", "Fernanda Lima"];
 
 // Guest status
 type GuestStatus = "pending" | "going" | "notGoing";
 
-function ProductValues() {
+function ProductValues({ guestName }: ProductValuesProps) {
   const [statuses, setStatuses] = useState<Record<string, GuestStatus>>({});
   const [dialogOpen, setDialogOpen] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
@@ -81,7 +86,8 @@ function ProductValues() {
               textShadow: "1px 1px 4px rgba(0,0,0,0.15)",
             }}
           >
-            Você foi escolhido para esse momento
+            {/* Você foi escolhido para esse momento */}
+            {guestName ? `${guestName}, Você foi escolhido para esse momento` : "Você foi escolhido para esse momento"}
           </Typography>
 
           <Typography
@@ -148,7 +154,6 @@ function ProductValues() {
                           boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
                         }}
                       >
-                        {/* Left X */}
                         <ToggleButton
                           value="notGoing"
                           onClick={() => handleStatusChange(guest, "notGoing")}
@@ -166,7 +171,6 @@ function ProductValues() {
                           <CloseIcon sx={{ color: "#fff" }} />
                         </ToggleButton>
 
-                        {/* Middle name */}
                         <Box
                           sx={{
                             width: "70%",
@@ -187,7 +191,6 @@ function ProductValues() {
                           {guest}
                         </Box>
 
-                        {/* Right Yes */}
                         <ToggleButton
                           value="going"
                           onClick={() => handleStatusChange(guest, "going")}

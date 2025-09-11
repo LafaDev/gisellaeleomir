@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useParams } from "react-router-dom";
 import ProductHero from "./modules/views/ProductHero";
 import ProductValues from "./modules/views/ProductValues";
 import ProductHowItWorks from "./modules/views/ProductHowItWorks";
@@ -16,6 +17,9 @@ function Index() {
   const [showScroll, setShowScroll] = React.useState(false);
   const casalRef = React.useRef<HTMLDivElement | null>(null);
 
+  // 👇 get guestName from the URL
+  let { guestName } = useParams<{ guestName: string }>();
+
   React.useEffect(() => {
     const element = casalRef.current;
     if (!element) return;
@@ -23,18 +27,13 @@ function Index() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Show the FAB when Casal is NOT visible (scroll past ProductHero)
-          const entryValue = entry.isIntersecting;
-          setShowScroll(!entryValue);
+          setShowScroll(!entry.isIntersecting);
         });
       },
-      {
-        threshold: 0.1, // trigger when ~10% of Casal is visible
-      }
+      { threshold: 0.1 }
     );
 
     observer.observe(element);
-
     return () => observer.disconnect();
   }, []);
 
@@ -56,11 +55,13 @@ function Index() {
 
       <Casal />
       <Info />
-      <ProductValues />
+
+      {/* 👇 pass guestName down */}
+      <ProductValues guestName={guestName} />
+
       <ProductCategories />
       <ProductCTA />
 
-      {/* Scroll-to-top Button */}
       <Box
         sx={{
           position: "fixed",
@@ -68,7 +69,7 @@ function Index() {
           right: { xs: 10, sm: 70 },
           opacity: showScroll ? 1 : 0,
           transition: "opacity 0.15s",
-          pointerEvents: showScroll ? "auto" : "none", // prevents clicks when hidden
+          pointerEvents: showScroll ? "auto" : "none",
         }}
       >
         <Fab
@@ -90,4 +91,3 @@ function Index() {
 }
 
 export default withRoot(Index);
-
