@@ -58,7 +58,7 @@ const gifts = [
 export default function WeddingGifts() {
   const [open, setOpen] = useState(false);
   const [selectedGift, setSelectedGift] = useState<any>(null);
-  const [message, setMessage] = useState("");
+  const [_message, setMessage] = useState("");
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [copySnackOpen, setCopySnackOpen] = useState(false);
 
@@ -304,7 +304,7 @@ export default function WeddingGifts() {
                 fullWidth
                 sx={{ mb: 2 }}
               />
-              <TextField
+              {/* <TextField
                 label="Mensagem para os noivos"
                 placeholder="Escreva uma mensagem..."
                 value={message}
@@ -312,13 +312,13 @@ export default function WeddingGifts() {
                 multiline
                 minRows={3}
                 fullWidth
-              />
+              /> */}
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Fechar</Button>
               <Button
                 variant="contained"
-                disabled={!message.trim()}
+                // disabled={!message.trim()}
                 onClick={handleConfirm}
                 sx={{
                   "&:focus": { outline: "none" },
