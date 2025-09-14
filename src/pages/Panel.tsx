@@ -9,6 +9,11 @@ import {
   DialogContent,
   DialogActions,
   IconButton,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Paper,
 } from "@mui/material";
 import type { GridColDef, GridRowHeightParams, GridRowHeightReturnValue } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid";
@@ -17,22 +22,24 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy"; // <-- new icon
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 import * as GuestAPI from "../services/guestAPI";
 
 export default function Panel() {
   const [guests, setGuests] = useState<GuestAPI.Guest[]>([]);
 
-  // Guest Dialog
   const [guestDialogOpen, setGuestDialogOpen] = useState(false);
   const [guestName, setGuestName] = useState("");
   const [guestTag, setGuestTag] = useState("");
+  const [guestGoing, setGuestGoing] = useState(false);
+  const [guestConfirmed, setGuestConfirmed] = useState(false);
   const [editGuestId, setEditGuestId] = useState<number | null>(null);
 
-  // Accompany Dialog
   const [accompanyDialogOpen, setAccompanyDialogOpen] = useState(false);
   const [accompanyName, setAccompanyName] = useState("");
+  const [accompanyGoing, setAccompanyGoing] = useState(false);
+  const [accompanyConfirmed, setAccompanyConfirmed] = useState(false);
   const [currentGuestId, setCurrentGuestId] = useState<number | null>(null);
   const [editAccompanyId, setEditAccompanyId] = useState<number | null>(null);
 
@@ -50,15 +57,19 @@ export default function Panel() {
     fetchGuests();
   }, []);
 
-  /** ------------------ Guest Handlers ------------------ */
+  /** ------------------ Guest Dialog ------------------ */
   const openGuestDialog = (guest?: GuestAPI.Guest) => {
     if (guest) {
       setGuestName(guest.name);
       setGuestTag(guest.tag);
+      setGuestGoing(guest.going);
+      setGuestConfirmed(guest.confirmed);
       setEditGuestId(guest.id);
     } else {
       setGuestName("");
       setGuestTag("");
+      setGuestGoing(false);
+      setGuestConfirmed(false);
       setEditGuestId(null);
     }
     setGuestDialogOpen(true);
@@ -73,6 +84,9 @@ export default function Panel() {
     try {
       if (editGuestId !== null) {
         await GuestAPI.updateGuest(editGuestId, guestName, guestTag);
+        if (guestConfirmed) {
+          await GuestAPI.updateGoingStatus(editGuestId, "guest", guestGoing);
+        }
       } else {
         await GuestAPI.createGuest(guestName, guestTag);
       }
@@ -94,34 +108,39 @@ export default function Panel() {
     }
   };
 
-  /** ------------------ Accompany Handlers ------------------ */
+  /** ------------------ Accompany Dialog ------------------ */
   const openAccompanyDialog = (guestId: number, accompany?: GuestAPI.Accompany) => {
     setCurrentGuestId(guestId);
     if (accompany) {
       setAccompanyName(accompany.name);
+      setAccompanyGoing(accompany.going);
+      setAccompanyConfirmed(accompany.confirmed);
       setEditAccompanyId(accompany.id);
     } else {
       setAccompanyName("");
+      setAccompanyGoing(false);
+      setAccompanyConfirmed(false);
       setEditAccompanyId(null);
     }
     setAccompanyDialogOpen(true);
   };
 
   const saveAccompany = async () => {
-    if (!accompanyName.trim()) {
+    if (!accompanyName.trim() || currentGuestId === null) {
       alert("Nome do acompanhante é obrigatório");
       return;
     }
 
-    if (currentGuestId === null) return;
-
     try {
       if (editAccompanyId !== null) {
         await GuestAPI.updateAccompany(currentGuestId, editAccompanyId, accompanyName);
+        if (accompanyConfirmed) {
+          await GuestAPI.updateGoingStatus(editAccompanyId, "accompany", accompanyGoing);
+        }
       } else {
         await GuestAPI.createAccompany(currentGuestId, accompanyName);
       }
-      await fetchGuests();
+      fetchGuests();
       setAccompanyDialogOpen(false);
     } catch (err) {
       console.error(err);
@@ -139,29 +158,27 @@ export default function Panel() {
     }
   };
 
-  /** ------------------ Status Update ------------------ */
-  const toggleStatus = async (
-    id: number,
-    type: "guest" | "accompany",
-    field: "going" | "confirmed",
-    value: boolean
-  ) => {
-    try {
-      await GuestAPI.updateStatus(id, type, field, value);
-      fetchGuests();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   /** ------------------ Copy Link ------------------ */
   const copyGuestLink = (tag: string) => {
-    const baseUrl = window.location.origin; // e.g. http://localhost:5173
-    const url = `${baseUrl}/${tag}`;
-    navigator.clipboard.writeText(url).then(() => {
-      alert("Link copiado!");
-    });
+    const baseUrl = window.location.origin;
+    navigator.clipboard.writeText(`${baseUrl}/${tag}`).then(() => alert("Link copiado!"));
   };
+
+  /** ------------------ Counters ------------------ */
+  const totalGuests = guests.length;
+  const totalInvited = guests.length + guests.reduce((acc, g) => acc + (g.accompany?.length || 0), 0);
+  const totalConfirmedGoing = guests.reduce(
+    (acc, g) => acc + (g.confirmed && g.going ? 1 : 0) + (g.accompany?.filter((a) => a.confirmed && a.going).length || 0),
+    0
+  );
+  const totalNotConfirmed = guests.reduce(
+    (acc, g) => acc + (!g.confirmed ? 1 : 0) + (g.accompany?.filter((a) => !a.confirmed).length || 0),
+    0
+  );
+  const totalConfirmedNotGoing = guests.reduce(
+    (acc, g) => acc + (g.confirmed && !g.going ? 1 : 0) + (g.accompany?.filter((a) => a.confirmed && !a.going).length || 0),
+    0
+  );
 
   /** ------------------ DataGrid Columns ------------------ */
   const columns: GridColDef[] = [
@@ -183,24 +200,27 @@ export default function Panel() {
       field: "going",
       headerName: "Vai?",
       width: 100,
-      renderCell: (params) => (
-        <IconButton
-          onClick={() => toggleStatus(params.row.id, "guest", "going", !params.row.going)}
-        >
-          {params.value ? <CheckIcon color="success" /> : <CloseIcon color="error" />}
-        </IconButton>
-      ),
+      renderCell: (params) => {
+        const canToggle = params.row.confirmed;
+        return (
+          <IconButton
+            onClick={() =>
+              canToggle &&
+              GuestAPI.updateGoingStatus(params.row.id, "guest", !params.row.going).then(fetchGuests)
+            }
+            disabled={!canToggle}
+          >
+            {params.value ? <CheckIcon color="success" /> : <CloseIcon color="error" />}
+          </IconButton>
+        );
+      },
     },
     {
       field: "confirmed",
       headerName: "Confirmado?",
       width: 130,
       renderCell: (params) => (
-        <IconButton
-          onClick={() =>
-            toggleStatus(params.row.id, "guest", "confirmed", !params.row.confirmed)
-          }
-        >
+        <IconButton>
           {params.value ? <CheckIcon color="success" /> : <CloseIcon color="error" />}
         </IconButton>
       ),
@@ -213,34 +233,30 @@ export default function Panel() {
         const accompanies: GuestAPI.Accompany[] = params.row.accompany || [];
         return (
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            {accompanies.map((a) => (
-              <Box
-                key={a.id}
-                sx={{ display: "flex", alignItems: "center", mb: 0.5, flexWrap: "wrap" }}
-              >
-                <Typography sx={{ mr: 1 }}>{a.name}</Typography>
-                <IconButton
-                  size="small"
-                  onClick={() => toggleStatus(a.id, "accompany", "going", !a.going)}
-                >
-                  {a.going ? <CheckIcon color="success" /> : <CloseIcon color="error" />}
-                </IconButton>
-                <IconButton
-                  size="small"
-                  onClick={() =>
-                    toggleStatus(a.id, "accompany", "confirmed", !a.confirmed)
-                  }
-                >
-                  {a.confirmed ? <CheckIcon color="success" /> : <CloseIcon color="error" />}
-                </IconButton>
-                <IconButton size="small" onClick={() => openAccompanyDialog(params.row.id, a)}>
-                  <EditIcon fontSize="small" />
-                </IconButton>
-                <IconButton size="small" onClick={() => deleteAccompany(a.id)}>
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </Box>
-            ))}
+            {accompanies.map((a) => {
+              const canToggle = a.confirmed;
+              return (
+                <Box key={a.id} sx={{ display: "flex", alignItems: "center", mb: 0.5, flexWrap: "wrap" }}>
+                  <Typography sx={{ mr: 1 }}>{a.name}</Typography>
+                  <IconButton
+                    size="small"
+                    onClick={() =>
+                      canToggle &&
+                      GuestAPI.updateGoingStatus(a.id, "accompany", !a.going).then(fetchGuests)
+                    }
+                    disabled={!canToggle}
+                  >
+                    {a.going ? <CheckIcon color="success" /> : <CloseIcon color="error" />}
+                  </IconButton>
+                  <IconButton size="small" onClick={() => openAccompanyDialog(params.row.id, a)}>
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton size="small" onClick={() => deleteAccompany(a.id)}>
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+              );
+            })}
           </Box>
         );
       },
@@ -265,29 +281,37 @@ export default function Panel() {
     },
   ];
 
-  /** ------------------ Dynamic Row Height ------------------ */
   const getRowHeight = (params: GridRowHeightParams): GridRowHeightReturnValue => {
     const baseHeight = 52;
     const extraHeight = (params.model.accompany?.length || 0) * 38;
     return baseHeight + extraHeight;
   };
 
-  /** ------------------ Count confirmed guests ------------------ */
-  const confirmedCount = guests.reduce(
-    (acc, g) => acc + (g.confirmed ? 1 : 0) + (g.accompany?.filter((a) => a.confirmed).length || 0),
-    0
-  );
-
-  /** ------------------ Render ------------------ */
+  /** ------------------ JSX ------------------ */
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h4" sx={{ mb: 2 }}>
         Painel de convidados
       </Typography>
 
-      <Typography variant="subtitle1" sx={{ mb: 2 }}>
-        Total de convidados confirmados: {confirmedCount}
-      </Typography>
+      {/* Counters */}
+      <Box sx={{ display: "flex", gap: 4, mb: 2, flexWrap: "wrap" }}>
+        <Paper sx={{ p: 1, minWidth: 150 }} elevation={2}>
+          <Typography>Total de convidados: {totalGuests}</Typography>
+        </Paper>
+        <Paper sx={{ p: 1, minWidth: 150 }} elevation={2}>
+          <Typography>Total convidados + acompanhantes: {totalInvited}</Typography>
+        </Paper>
+        <Paper sx={{ p: 1, minWidth: 150 }} elevation={2}>
+          <Typography>Total confirmados e vão: {totalConfirmedGoing}</Typography>
+        </Paper>
+        <Paper sx={{ p: 1, minWidth: 150 }} elevation={2}>
+          <Typography>Total não confirmados: {totalNotConfirmed}</Typography>
+        </Paper>
+        <Paper sx={{ p: 1, minWidth: 150 }} elevation={2}>
+          <Typography>Total confirmados mas não vão: {totalConfirmedNotGoing}</Typography>
+        </Paper>
+      </Box>
 
       <Button variant="contained" sx={{ mb: 2 }} onClick={() => openGuestDialog()}>
         Adicionar convidado
@@ -305,50 +329,46 @@ export default function Panel() {
         />
       </div>
 
-      {/* ------------------ Guest Dialog ------------------ */}
+      {/* Guest Dialog */}
       <Dialog open={guestDialogOpen} onClose={() => setGuestDialogOpen(false)}>
         <DialogTitle>{editGuestId !== null ? "Editar convidado" : "Novo convidado"}</DialogTitle>
         <DialogContent>
-          <TextField
-            label="Nome"
-            fullWidth
-            sx={{ my: 1 }}
-            value={guestName}
-            onChange={(e) => setGuestName(e.target.value)}
-          />
-          <TextField
-            label="Tag"
-            fullWidth
-            sx={{ my: 1 }}
-            value={guestTag}
-            onChange={(e) => setGuestTag(e.target.value)}
-          />
+          <TextField label="Nome" fullWidth sx={{ my: 1 }} value={guestName} onChange={(e) => setGuestName(e.target.value)} />
+          <TextField label="Tag" fullWidth sx={{ my: 1 }} value={guestTag} onChange={(e) => setGuestTag(e.target.value)} />
+          {editGuestId !== null && guestConfirmed && (
+            <FormControl fullWidth sx={{ my: 1 }}>
+              <InputLabel id="guest-going-label">Vai?</InputLabel>
+              <Select labelId="guest-going-label" value={guestGoing ? "true" : "false"} onChange={(e) => setGuestGoing(e.target.value === "true")}>
+                <MenuItem value="true">Sim</MenuItem>
+                <MenuItem value="false">Não</MenuItem>
+              </Select>
+            </FormControl>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setGuestDialogOpen(false)}>Cancelar</Button>
-          <Button variant="contained" onClick={saveGuest}>
-            Salvar
-          </Button>
+          <Button variant="contained" onClick={saveGuest}>Salvar</Button>
         </DialogActions>
       </Dialog>
 
-      {/* ------------------ Accompany Dialog ------------------ */}
+      {/* Accompany Dialog */}
       <Dialog open={accompanyDialogOpen} onClose={() => setAccompanyDialogOpen(false)}>
         <DialogTitle>{editAccompanyId !== null ? "Editar acompanhante" : "Novo acompanhante"}</DialogTitle>
         <DialogContent>
-          <TextField
-            label="Nome"
-            fullWidth
-            sx={{ my: 1 }}
-            value={accompanyName}
-            onChange={(e) => setAccompanyName(e.target.value)}
-          />
+          <TextField label="Nome" fullWidth sx={{ my: 1 }} value={accompanyName} onChange={(e) => setAccompanyName(e.target.value)} />
+          {editAccompanyId !== null && accompanyConfirmed && (
+            <FormControl fullWidth sx={{ my: 1 }}>
+              <InputLabel id="accompany-going-label">Vai?</InputLabel>
+              <Select labelId="accompany-going-label" value={accompanyGoing ? "true" : "false"} onChange={(e) => setAccompanyGoing(e.target.value === "true")}>
+                <MenuItem value="true">Sim</MenuItem>
+                <MenuItem value="false">Não</MenuItem>
+              </Select>
+            </FormControl>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setAccompanyDialogOpen(false)}>Cancelar</Button>
-          <Button variant="contained" onClick={saveAccompany}>
-            Salvar
-          </Button>
+          <Button variant="contained" onClick={saveAccompany}>Salvar</Button>
         </DialogActions>
       </Dialog>
     </Box>

@@ -31,8 +31,8 @@ export const createGuest = async (name: string, tag: string) => {
     body: JSON.stringify({
       name,
       tag,
-      going: false,       // required by backend
-      confirmed: false,   // required by backend
+      going: false,
+      confirmed: false,
     }),
   });
 };
@@ -62,9 +62,9 @@ export const createAccompany = async (guestId: number, name: string) => {
     method: "POST",
     body: JSON.stringify({
       name,
-      going: false,       // required by backend
-      confirmed: false,   // required by backend
-      guestId,            // required by backend
+      going: false,
+      confirmed: false,
+      guestId,
     }),
   });
 };
@@ -85,14 +85,14 @@ export const deleteAccompany = async (id: number) => {
 };
 
 // ------------------ Status ------------------
-export const updateStatus = async (
+// Use new endpoint to toggle 'going' only
+export const updateGoingStatus = async (
   id: number,
   type: "guest" | "accompany",
-  field: "going" | "confirmed",
-  value: boolean
+  going: boolean
 ) => {
-  return authFetch(`/guest/${id}/status`, {
+  return authFetch(`/guest/${id}/going`, {
     method: "PATCH",
-    body: JSON.stringify({ type, [field]: value }),
+    body: JSON.stringify({ type, going }),
   });
 };
