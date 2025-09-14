@@ -76,6 +76,9 @@ function ProductValues({ guestName = "" }: ProductValuesProps) {
 
         setGuest(fetched);
 
+        // <-- SINCRONIZA ESTADO LOCAL COM O BANCO
+        setConfirmed(fetched.confirmed);
+
         // initialize statuses. treat "going" when going === true or confirmed === true
         const initial: Record<string, GuestStatus> = {};
         initial[`guest-${fetched.id}`] = fetched.going || fetched.confirmed ? "going" : "pending";

@@ -212,7 +212,8 @@ export default function WeddingGifts() {
                     bgcolor: "#9A84B7",
                     fontFamily: "Quicksand",
                     textTransform: "uppercase",
-                    "&:hover": { bgcolor: "#7B6993" }
+                    "&:hover": { bgcolor: "#7B6993" },
+                    "&:focus": { outline: "none" },
                   }}
                   onClick={() => handleOpen(gift)}
                 >
@@ -289,8 +290,8 @@ export default function WeddingGifts() {
                 {selectedGift.price}
               </Typography>
               <TextField
-                label="Código de pagamento - PIX CELULAR"
-                value="(21) 9211-3923"
+                label="Código de pagamento - PIX EMAIL"
+                value="leomirgisella2025@gmail.com"
                 // value={selectedGift.paymentCode}
                 InputProps={{
                   readOnly: true,
@@ -319,6 +320,9 @@ export default function WeddingGifts() {
                 variant="contained"
                 disabled={!message.trim()}
                 onClick={handleConfirm}
+                sx={{
+                  "&:focus": { outline: "none" },
+                }}
               >
                 Confirmar
               </Button>
