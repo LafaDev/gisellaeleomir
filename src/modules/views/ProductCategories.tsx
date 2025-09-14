@@ -76,7 +76,7 @@ export default function WeddingGifts() {
   const handleCopyCode = () => {
     if (selectedGift?.paymentCode) {
       // navigator.clipboard.writeText(selectedGift.paymentCode);
-      navigator.clipboard.writeText("21992113923");
+      navigator.clipboard.writeText("leomiregisella2025@gmail.com");
       setCopySnackOpen(true);
     }
   };
